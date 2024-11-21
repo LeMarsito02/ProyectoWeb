@@ -3,6 +3,7 @@
   <head>
     <title>PAPA'S PIZZERIA</title>
     <link rel="stylesheet" href="Style.css">
+    <script src="script.js"></script>
     <meta charset="UTF-8">
   </head>
   <body> 

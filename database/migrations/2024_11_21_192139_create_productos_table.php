@@ -17,7 +17,7 @@ class CreateProductosTable extends Migration
             $table->id();
             $table->string('name'); // Nombre del producto
             $table->string('category'); // Categoría como pizza, bebida, postre
-            $table->decimal('price', 8, 2); // Precio del producto
+            $table->integer('price'); // Precio del producto
             $table->string('image'); // URL de la imagen del producto
             $table->text('availableDescription'); // Descripción del producto
             $table->timestamps(); // timestamps: created_at, updated_at

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,24 +8,27 @@ class Pedido extends Model
 {
     use HasFactory;
 
-    // Definir la tabla si el nombre no sigue la convención plural
     protected $table = 'pedidos';
 
-    // Atributos que son asignables masivamente
     protected $fillable = [
-        'cliente_id', 'total', 'tax', 'delivery_type', 'status',
+        'cliente_id', 
+        'total', 
+        'tax', 
+        'delivery_type', 
+        'status',
     ];
 
-    // Relación con los productos (un pedido puede tener muchos productos)
+    // Relación muchos a muchos con datos adicionales en `pedido_productos`
     public function productos()
     {
-        return $this->belongsToMany(Producto::class, 'pedido_producto')
-                    ->withPivot('quantity'); // Necesitamos la cantidad también
+        return $this->belongsToMany(Producto::class, 'pedido_productos')
+                    ->withPivot('quantity', 'precio_unitario', 'subtotal')
+                    ->withTimestamps();
+    }
+        public function cliente()
+    {
+        return $this->belongsTo(Cliente::class, 'cliente_id');
     }
 
-    // Relación con el cliente
-    public function cliente()
-    {
-        return $this->belongsTo(Cliente::class);
-    }
+
 }

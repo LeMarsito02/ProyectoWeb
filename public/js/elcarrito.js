@@ -13,12 +13,9 @@ async function fetchMenuItems() {
         }
 
         const data = await response.json();
-
         if (!data || !Array.isArray(data)) {
             throw new Error('Datos inválidos recibidos de la API');
         }
-        console.log('Productos cargados:', data);
-
         return data; 
     } catch (error) {
         console.error('Error al cargar los productos:', error);
@@ -45,16 +42,13 @@ function renderMenuItems(menuItems, category) {
     const menuItemsContainer = document.getElementById('menu-items');
     menuItemsContainer.innerHTML = ''; 
 
-    // Filtra los elementos basados en la categoría seleccionada
     const filteredItems = menuItems.filter(item => item.category === category);
     
-    // Si no hay elementos, muestra un mensaje
     if (filteredItems.length === 0) {
         menuItemsContainer.innerHTML = `<p>No hay productos disponibles en esta categoría</p>`;
         return;
     }
 
-    // Renderiza los productos filtrados
     filteredItems.forEach(item => {   
         const itemElement = document.createElement('div');
         itemElement.className = 'item';
@@ -63,14 +57,14 @@ function renderMenuItems(menuItems, category) {
             <h3>${item.name}</h3>
             <p>$${item.price.toFixed(2)}</p>
             <p>${item.availableDescription}</p>
-            <button class="add-btn" onclick="addToOrder('${item.name}', ${item.price})">Agregar</button>
+            <button class="add-btn" onclick="addToOrder(${item.id}, '${item.name}', ${item.price})">Agregar</button>
         `;
         menuItemsContainer.appendChild(itemElement);
     });
 }
 
 function filterCategory(category) {
-    loadMenuItems(category); // Cargar productos filtrados de la API
+    loadMenuItems(category); 
     const categoryButtons = document.querySelectorAll('.category');
     categoryButtons.forEach(button => {
         button.classList.remove('active');
@@ -80,20 +74,20 @@ function filterCategory(category) {
     });
 }
 
-function addToOrder(name, price) {
-    const existingItem = order.find(item => item.name === name);
+function addToOrder(id, name, price) {
+    const existingItem = order.find(item => item.id === id);
     if (existingItem) {
         existingItem.quantity++;
         existingItem.totalPrice += price;
     } else {
-        order.push({ name, price, quantity: 1, totalPrice: price });
+        order.push({ id, name, price, quantity: 1, totalPrice: price });
     }
 
     updateOrderSummary();
 }
 
-function removeFromOrder(name) {
-    const itemIndex = order.findIndex(item => item.name === name);
+function removeFromOrder(id) {
+    const itemIndex = order.findIndex(item => item.id === id);
 
     if (itemIndex > -1) {
         if (order[itemIndex].quantity > 1) {
@@ -114,7 +108,7 @@ function updateOrderSummary() {
     let itemCount = 0;
     let total = 0;
 
-    order.forEach((item, index) => {
+    order.forEach(item => {
         itemCount += item.quantity;
         total += item.totalPrice;
 
@@ -122,9 +116,9 @@ function updateOrderSummary() {
         orderItem.className = 'order-item';
         orderItem.innerHTML = `
             <p>${item.name} <span>$${item.totalPrice.toFixed(2)}</span></p>
-            <button class="remove-btn" onclick="removeFromOrder('${item.name}')">-</button>
+            <button class="remove-btn" onclick="removeFromOrder(${item.id})">-</button>
             <span>${item.quantity}</span>
-            <button class="add-btn" onclick="addToOrder('${item.name}', ${item.price})">+</button>
+            <button class="add-btn" onclick="addToOrder(${item.id}, '${item.name}', ${item.price})">+</button>
         `;
         orderItems.appendChild(orderItem);
     });
@@ -167,13 +161,10 @@ async function printBill() {
     }
 
     let itemsList = order.map(item => ({
-        nombre: item.name,
-        precio: item.totalPrice,
+        producto_id: item.id,
+        quantity: item.quantity,
+        precio_unitario: item.price,
     }));
-
-    let total = order.reduce((sum, item) => sum + item.totalPrice, 0); 
-    let tax = (total * 0.10).toFixed(2); 
-    let totalAmount = (total + parseFloat(tax)).toFixed(2); 
 
     const orderDetails = {
         cliente: {
@@ -181,7 +172,7 @@ async function printBill() {
             telefono: customerPhone,
             direccion: customerAddress
         },
-        pedido: itemsList
+        productos: itemsList
     };
 
     try {
@@ -189,7 +180,7 @@ async function printBill() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Protección CSRF
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') 
             },
             body: JSON.stringify(orderDetails)
         });
@@ -201,7 +192,7 @@ async function printBill() {
         const result = await response.json();
         if (result.success) {
             alert('¡Pedido realizado con éxito!');
-            window.location.href = 'index.html';
+            window.location.href = 'index';
         } else {
             throw new Error('Error al procesar el pedido.');
         }
@@ -210,5 +201,4 @@ async function printBill() {
         alert('Hubo un problema al procesar tu pedido. Por favor, inténtalo de nuevo.');
     }
 }
-
 

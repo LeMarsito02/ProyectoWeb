@@ -131,7 +131,6 @@ footer a img {
     margin-top: 5px;
 }
 
-
 .InicioLogo{
     margin: 10rem 10rem;
 }
@@ -210,8 +209,6 @@ main .inicio .derecha p {
         padding-left: 0;
     }
 }
-
-
 
 /*Tienda*/
 
@@ -410,149 +407,4 @@ body {
     
 .customer-info {
     margin: 20px 0;
-}
-
-.customer-info label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #333;
-}
-
-.customer-info input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    margin-bottom: 15px; 
-    font-size: 16px; 
-}
-
-/* Estilos para la página de inicio de sesión */
-.login-container {
-    width: 100%;
-    max-width: 400px;
-    margin: 100px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-.register-container {
-    width: 100%;
-    max-width: 400px;
-    margin: 100px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-h1 {
-    text-align: center;
-    color: #FF8C00;
-    margin-bottom: 20px;
-}
-
-.input-group {
-    margin-bottom: 15px;
-}
-
-.input-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.buttons {
-    display: flex;
-    justify-content: space-between;
-}
-
-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.btn-register {
-    background-color: #FF8C00;
-    color: white;
-}
-
-.btn-register:hover {
-    background-color: #e07b00;
-}
-
-.btn-login {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.btn-login:hover {
-    background-color: #45a049;
-}
-
-body.dashboard-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-.dashboard-container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-}
-
-/* Estilos de la tabla de pedidos */
-.dashboard-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-.dashboard-table th, .dashboard-table td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd;
-}
-.dashboard-table th {
-    background-color: #FF8C00;
-    color: #fff;
-}
-
-/* Estilos de los botones de acción */
-.dashboard-btn {
-    padding: 5px 10px;
-    background-color: #FF8C00;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-}
-.dashboard-btn:hover {
-    background-color: #e57800;
-}
-
-/* Estilos del área de detalles del pedido */
-#dashboard-detalles-pedido {
-    margin-top: 20px;
-    border: 1px solid #ddd;
-    padding: 20px;
-    background-color: #f9f9f9;
-}
-#dashboard-detalles-pedido h3 {
-    margin-top: 0;
-}
-
-#dashboard-detalles-pedido ul {
-    padding-left: 20px;
 }

@@ -17,10 +17,18 @@
               <li class="menu-item"><a href="{{ route('menu') }}"><img src="Assets/Menu/menuicon.png" alt="Menu"><span>Menu</span></a></li>
               <li class="menu-item"><a href="{{ route('contacto') }}"><img src="Assets/Menu/nosotros.png" alt="Order"><span>Nosotros</span></a></li>
           </ul>
-          <div class="profile">
-              <img src="Assets/Menu/anon.png" alt="Profile Image">
-              <span>Usuario sin sesion iniciada</span>
-          </div>
+          <a href="{{ Auth::check() ? route('dashboard') : route('login') }}" style="text-decoration: none; color: inherit;">
+                <div class="profile">
+                    <img src="{{ asset('Assets/Menu/anon.png') }}" alt="Profile Image">
+                    @auth
+                        <!-- Usuario autenticado -->
+                        <span>{{ Auth::user()->name }}</span>
+                    @else
+                        <!-- Usuario no autenticado -->
+                        <span>Usuario sin sesión iniciada</span>
+                    @endauth
+                </div>
+            </a>
       </nav>
   </header>
     <main class="izquierda">

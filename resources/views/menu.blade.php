@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('css/Style.css') }}">
     <!-- Ruta al JS -->
     <script src="{{ asset('js/elcarrito.js') }}" defer></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
     <header>
@@ -20,10 +21,19 @@
                 <li class="menu-item active"><a href="{{ route('menu') }}"><img src="{{ asset('Assets/Menu/menuicon.png') }}" alt="Menu"><span>Menu</span></a></li>
                 <li class="menu-item"><a href="{{ route('contacto') }}"><img src="{{ asset('Assets/Menu/nosotros.png') }}" alt="Order"><span>Nosotros</span></a></li>
             </ul>
-            <div class="profile">
-                <img src="{{ asset('Assets/Menu/anon.png') }}" alt="Profile Image">
-                <span>Usuario sin sesión iniciada</span>
-            </div>
+            <a href="{{ Auth::check() ? route('dashboard') : route('login') }}" style="text-decoration: none; color: inherit;">
+                <div class="profile">
+                    <img src="{{ asset('Assets/Menu/anon.png') }}" alt="Profile Image">
+                    @auth
+                        <!-- Usuario autenticado -->
+                        <span>{{ Auth::user()->name }}</span>
+                    @else
+                        <!-- Usuario no autenticado -->
+                        <span>Usuario sin sesión iniciada</span>
+                    @endauth
+                </div>
+            </a>
+
         </nav>
     </header>
 

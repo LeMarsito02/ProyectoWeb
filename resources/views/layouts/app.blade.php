@@ -16,7 +16,17 @@
               <li class="menu-item active"><a href={{ route('index') }}><img src="Assets/Menu/casaicon.png" alt="Home"><span>Inicio</span></a></li>
               <li class="menu-item"><a href="{{ route('menu') }}"><img src="Assets/Menu/menuicon.png" alt="Menu"><span>Menu</span></a></li>
               <li class="menu-item"><a href="{{ route('contacto') }}"><img src="Assets/Menu/nosotros.png" alt="Order"><span>Nosotros</span></a></li>
-          </ul>
+              @auth
+              <!-- Solo visible para usuarios autenticados -->
+              <li class="menu-item">
+                  <a href="{{ route('dashboard') }}">
+                      <img src="Assets/Menu/dashboardicon.png" alt="Dashboard">
+                      <span>Dashboard</span>
+                  </a>
+              </li>
+              <li class="menu-item"><a href="{{ route('logout') }}"><img src="Assets/Menu/logouticon.png" alt="Logout"><span>Salir</span></a> </li>
+              @endauth
+            </ul>
           <a href="{{ Auth::check() ? route('dashboard') : route('login') }}" style="text-decoration: none; color: inherit;">
                 <div class="profile">
                     <img src="{{ asset('Assets/Menu/anon.png') }}" alt="Profile Image">

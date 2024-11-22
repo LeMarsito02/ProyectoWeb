@@ -24,9 +24,9 @@ Route::get('register', [RegisterController::class, 'showRegisterForm'])->name('r
 Route::post('register', [RegisterController::class, 'register']);
 
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-Route::get('/dashboard/pedido/{id}', [DashboardController::class, 'show'])->name('dashboard.show');
-
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth:sanctum');
+Route::get('/dashboard/pedido/{id}', [DashboardController::class, 'show'])->middleware('auth:sanctum');
+Route::post('/dashboard/pedido/{id}/status', [DashboardController::class, 'updateStatus'])->name('pedido.updateStatus')->middleware('auth:sanctum');
 
 
 Route::get('/index', function () {

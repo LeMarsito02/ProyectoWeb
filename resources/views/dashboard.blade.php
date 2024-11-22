@@ -3,7 +3,8 @@
   <head>
     <title>PAPA'S PIZZERIA</title>
     <link rel="stylesheet" href="{{ asset(path: 'css/style.css') }}">
-    <script src="script.js"></script>
+    <script src="{{ asset('js/dashboard.js') }}"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
   </head>
   <body> 
@@ -39,6 +40,7 @@
                       <span>Dashboard</span>
                   </a>
               </li>
+              <li class="menu-item"><a href="{{ route('logout') }}"><img src="Assets/Menu/logouticon.png" alt="Logout"><span>Salir</span></a> </li>
               @endauth
           </ul>
           <a href="{{ Auth::check() ? route('dashboard') : route('login') }}" style="text-decoration: none; color: inherit;">
@@ -56,47 +58,68 @@
       </nav>
     </header>
     <main class="dashboard-main">
-        <div class="dashboard-container">
-            <h2 class="dashboard-title">Dashboard de Pedidos</h2>
+    <div class="dashboard-container">
+        <h2 class="dashboard-title">Dashboard de Pedidos</h2>
 
-            <!-- Tabla de Pedidos -->
-            <table class="dashboard-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Cliente</th>
-                        <th>Estado</th>
-                        <th>Total</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($pedidos as $pedido)
-                    <tr>
-                        <td>{{ $pedido->id }}</td>
-                        <td>{{ $pedido->cliente->name }}</td>
-                        <td>{{ $pedido->status }}</td>
-                        <td>${{ number_format($pedido->total, 2) }}</td>
-                        <td>
-                            <button class="dashboard-btn dashboard-btn-info ver-detalles" data-id="{{ $pedido->id }}">Ver Detalles</button>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-
-            <!-- Sección de Detalles del Pedido -->
-            <div id="dashboard-detalles-pedido" style="display: none;">
-                <h3 class="dashboard-subtitle">Detalles del Pedido</h3>
-                <p><strong>Cliente:</strong> <span id="dashboard-cliente-nombre"></span></p>
-                <p><strong>Teléfono:</strong> <span id="dashboard-cliente-telefono"></span></p>
-                <p><strong>Dirección:</strong> <span id="dashboard-cliente-direccion"></span></p>
-                <h4 class="dashboard-productos-title">Productos</h4>
-                <ul id="dashboard-productos-lista"></ul>
-                <p><strong>Total:</strong> $<span id="dashboard-pedido-total"></span></p>
-            </div>
+        <!-- Filtro de estado -->
+        <div class="filter">
+            <label for="estado-filter">Filtrar por estado:</label>
+            <select id="estado-filter">
+                <option value="">Todos</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="en_proceso">En Proceso</option>
+                <option value="completado">Completado</option>
+                <option value="cancelado">Cancelado</option>
+            </select>
         </div>
-    </main> 
+
+        <!-- Tabla de Pedidos -->
+        <div id="loading-filtro" style="display: none;">Cargando...</div>
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Estado</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="pedidos-tbody">
+                @foreach($pedidos as $pedido)
+                <tr>
+                    <td>{{ $pedido->id }}</td>
+                    <td>{{ $pedido->cliente->name }}</td>
+                    <td>
+                        <select class="estado-select" data-id="{{ $pedido->id }}">
+                            <option value="pendiente" {{ $pedido->status == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
+                            <option value="en_proceso" {{ $pedido->status == 'en_proceso' ? 'selected' : '' }}>En Proceso</option>
+                            <option value="completado" {{ $pedido->status == 'completado' ? 'selected' : '' }}>Completado</option>
+                            <option value="cancelado" {{ $pedido->status == 'cancelado' ? 'selected' : '' }}>Cancelado</option>
+                        </select>
+                    </td>
+                    <td>${{ number_format($pedido->total, 2) }}</td>
+                    <td>
+                        <button class="dashboard-btn ver-detalles" data-id="{{ $pedido->id }}">Ver Detalles</button>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <!-- Detalles del Pedido -->
+        <div id="dashboard-detalles-pedido" style="display: none;">
+            <h3>Detalles del Pedido</h3>
+            <p><strong>Cliente:</strong> <span id="dashboard-cliente-nombre"></span></p>
+            <p><strong>Teléfono:</strong> <span id="dashboard-cliente-telefono"></span></p>
+            <p><strong>Dirección:</strong> <span id="dashboard-cliente-direccion"></span></p>
+            <h4>Productos</h4>
+            <ul id="dashboard-productos-lista"></ul>
+            <p><strong>Total:</strong> $<span id="dashboard-pedido-total"></span></p>
+        </div>
+        <div id="loading" style="display: none;">Cargando...</div>
+    </div>
+</main>
     <footer class="footer">
       <div class="contacto">
         <h3>Información de Contacto</h3>
@@ -113,29 +136,4 @@
     </footer>
   </body>
 
-  <script>
-    document.querySelectorAll('.ver-detalles').forEach(button => {
-        button.addEventListener('click', function() {
-            const pedidoId = this.dataset.id;
-
-            fetch(`/dashboard/pedido/${pedidoId}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('cliente-nombre').innerText = data.cliente.name;
-                    document.getElementById('cliente-telefono').innerText = data.cliente.phone;
-                    document.getElementById('cliente-direccion').innerText = data.cliente.address;
-
-                    const productosLista = document.getElementById('productos-lista');
-                    productosLista.innerHTML = '';
-                    data.productos.forEach(producto => {
-                        productosLista.innerHTML += `<li>${producto.name} - Cantidad: ${producto.pivot.quantity}, Subtotal: $${producto.pivot.subtotal}</li>`;
-                    });
-
-                    document.getElementById('pedido-total').innerText = data.total;
-
-                    document.getElementById('detalles-pedido').style.display = 'block';
-                });
-        });
-    });
-    </script>
 </html>

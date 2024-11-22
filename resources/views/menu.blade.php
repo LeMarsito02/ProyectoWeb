@@ -20,6 +20,15 @@
                 <li class="menu-item"><a href="{{ route('index') }}"><img src="{{ asset('Assets/Menu/casaicon.png') }}" alt="Home"><span>Inicio</span></a></li>
                 <li class="menu-item active"><a href="{{ route('menu') }}"><img src="{{ asset('Assets/Menu/menuicon.png') }}" alt="Menu"><span>Menu</span></a></li>
                 <li class="menu-item"><a href="{{ route('contacto') }}"><img src="{{ asset('Assets/Menu/nosotros.png') }}" alt="Order"><span>Nosotros</span></a></li>
+                @auth
+                    <li class="menu-item">
+                        <a href="{{ route('dashboard') }}">
+                            <img src="Assets/Menu/dashboardicon.png" alt="Dashboard">
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="menu-item"><a href="{{ route('logout') }}"><img src="Assets/Menu/logouticon.png" alt="Logout"><span>Salir</span></a> </li>
+                @endauth
             </ul>
             <a href="{{ Auth::check() ? route('dashboard') : route('login') }}" style="text-decoration: none; color: inherit;">
                 <div class="profile">

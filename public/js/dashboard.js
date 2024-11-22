@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const pedidosTbody = document.getElementById('pedidos-tbody');
 
     console.log("Script cargado y listo.");
-
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    console.log(token);
     // Mostrar detalles del pedido
     document.querySelectorAll('.ver-detalles').forEach(button => {
         button.addEventListener('click', function () {
@@ -116,40 +117,44 @@ document.addEventListener('DOMContentLoaded', function () {
     function attachEvents() {
         document.querySelectorAll('.estado-select').forEach(select => {
             select.addEventListener('change', function () {
-                const pedidoId = this.dataset.id;
-                const estado = this.value;
-
+                const pedidoId = this.dataset.id; // Obtiene el ID del pedido desde el data-id
+                const estado = this.value; // Obtiene el estado seleccionado
+    
                 console.log(`Actualizando estado del pedido ID ${pedidoId} a: ${estado}`);
-
+    
+                // Mostrar el indicador de carga
                 loadingDetalles.style.display = 'block';
-
+    
                 fetch(`/dashboard/pedido/${pedidoId}/status`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     },
-                    body: JSON.stringify({ status: estado })
+                    body: JSON.stringify({ status: estado })  // Aquí solo enviamos el "status" en el cuerpo
                 })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Error al actualizar el estado del pedido.');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        alert(data.message); // Mensaje de éxito
-                    })
-                    .catch(error => {
-                        console.error('Error al actualizar el estado del pedido:', error);
-                        alert('Hubo un error al actualizar el estado del pedido.');
-                    })
-                    .finally(() => {
-                        loadingDetalles.style.display = 'none';
-                    });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al actualizar el estado del pedido.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert(data.message); // Mensaje de éxito
+                })
+                .catch(error => {
+                    console.error('Error al actualizar el estado del pedido:', error);
+                    alert('Hubo un error al actualizar el estado del pedido.');
+                })
+                .finally(() => {
+                    loadingDetalles.style.display = 'none'; // Ocultar el indicador de carga
+                });
             });
         });
     }
+    
+    
+    
 
     // Inicializar eventos
     attachEvents();

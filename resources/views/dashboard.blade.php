@@ -1,63 +1,65 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>PAPA'S PIZZERIA</title>
-    <link rel="stylesheet" href="{{ asset(path: 'css/style.css') }}">
-    <script src="{{ asset('js/dashboard.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <script src="{{ asset('js/dashboard.js') }}" defer></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
-  </head>
-  <body> 
-    <header>
-      <nav class="sidebar">
-          <div class="logo">
-              <img src="Assets/Menu/logo.png" alt="Logo">
-          </div>
-          <ul class="menu">
-              <li class="menu-item active">
-                  <a href="{{ route('index') }}">
-                      <img src="Assets/Menu/casaicon.png" alt="Home">
-                      <span>Inicio</span>
-                  </a>
-              </li>
-              <li class="menu-item">
-                  <a href="{{ route('menu') }}">
-                      <img src="Assets/Menu/menuicon.png" alt="Menu">
-                      <span>Menu</span>
-                  </a>
-              </li>
-              <li class="menu-item">
-                  <a href="{{ route('contacto') }}">
-                      <img src="Assets/Menu/nosotros.png" alt="Order">
-                      <span>Nosotros</span>
-                  </a>
-              </li>
-              @auth
-              <!-- Solo visible para usuarios autenticados -->
-              <li class="menu-item">
-                  <a href="{{ route('dashboard') }}">
-                      <img src="Assets/Menu/dashboardicon.png" alt="Dashboard">
-                      <span>Dashboard</span>
-                  </a>
-              </li>
-              <li class="menu-item"><a href="{{ route('logout') }}"><img src="Assets/Menu/logouticon.png" alt="Logout"><span>Salir</span></a> </li>
-              @endauth
-          </ul>
-          <a href="{{ Auth::check() ? route('dashboard') : route('login') }}" style="text-decoration: none; color: inherit;">
-                <div class="profile">
-                    <img src="{{ asset('Assets/Menu/anon.png') }}" alt="Profile Image">
-                    @auth
-                        <!-- Usuario autenticado -->
-                        <span>{{ Auth::user()->name }}</span>
-                    @else
-                        <!-- Usuario no autenticado -->
-                        <span>Usuario sin sesión iniciada</span>
-                    @endauth
-                </div>
-          </a>
-      </nav>
-    </header>
-    <main class="dashboard-main">
+</head>
+<body>
+<header>
+    <nav class="sidebar">
+        <div class="logo">
+            <img src="Assets/Menu/logo.png" alt="Logo">
+        </div>
+        <ul class="menu">
+            <li class="menu-item active">
+                <a href="{{ route('index') }}">
+                    <img src="Assets/Menu/casaicon.png" alt="Home">
+                    <span>Inicio</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="{{ route('menu') }}">
+                    <img src="Assets/Menu/menuicon.png" alt="Menu">
+                    <span>Menu</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="{{ route('contacto') }}">
+                    <img src="Assets/Menu/nosotros.png" alt="Order">
+                    <span>Nosotros</span>
+                </a>
+            </li>
+            @auth
+            <li class="menu-item">
+                <a href="{{ route('dashboard') }}">
+                    <img src="Assets/Menu/dashboardicon.png" alt="Dashboard">
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="{{ route('logout') }}">
+                    <img src="Assets/Menu/logouticon.png" alt="Logout">
+                    <span>Salir</span>
+                </a>
+            </li>
+            @endauth
+        </ul>
+        <a href="{{ Auth::check() ? route('dashboard') : route('login') }}" style="text-decoration: none; color: inherit;">
+            <div class="profile">
+                <img src="{{ asset('Assets/Menu/anon.png') }}" alt="Profile Image">
+                @auth
+                    <span>{{ Auth::user()->name }}</span>
+                @else
+                    <span>Usuario sin sesión iniciada</span>
+                @endauth
+            </div>
+        </a>
+    </nav>
+</header>
+<main class="dashboard-main">
     <div class="dashboard-container">
         <h2 class="dashboard-title">Dashboard de Pedidos</h2>
 
@@ -71,6 +73,12 @@
                 <option value="completado">Completado</option>
                 <option value="cancelado">Cancelado</option>
             </select>
+        </div>
+
+        <!-- Filtro de cliente -->
+        <div class="filter">
+            <label for="cliente-filter">Filtrar por cliente:</label>
+            <input type="text" id="cliente-filter" placeholder="Buscar cliente...">
         </div>
 
         <!-- Tabla de Pedidos -->
@@ -120,20 +128,19 @@
         <div id="loading" style="display: none;">Cargando...</div>
     </div>
 </main>
-    <footer class="footer">
-      <div class="contacto">
+<footer class="footer">
+    <div class="contacto">
         <h3>Información de Contacto</h3>
         <p>Teléfono: #####</p>
         <p>Email: contacto@papaspizzeria.com</p>
         <p>Dirección: Calle 143#76b27, Ciudad Bogotá, País Colombia</p>
-      </div>
-      <div class="redes-sociales">
+    </div>
+    <div class="redes-sociales">
         <h3>Síguenos en:</h3>
         <a href="#"><img src="Assets/iconlogos/face.png" alt="Facebook"></a>
         <a href="#"><img src="Assets/iconlogos/x.png" alt="Twitter"></a>
         <a href="#"><img src="Assets/iconlogos/ig.jpg" alt="Instagram"></a>
-      </div>
-    </footer>
-  </body>
-
+    </div>
+</footer>
+</body>
 </html>

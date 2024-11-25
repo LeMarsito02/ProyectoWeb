@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/Style.css') }}">
+<link rel="stylesheet" href="css/Style.css">
 <div class="inicio">
           <div class="">
             <img src="Assets/Menu/logo.png" alt="Inicio Logo" class="InicioLogo">

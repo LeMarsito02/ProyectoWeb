@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú</title>
     <!-- Ruta al CSS -->
-    <link rel="stylesheet" href="{{ asset('css/Style.css') }}">
+    <link rel="stylesheet" href="css/Style.css">
     <!-- Ruta al JS -->
-    <script src="{{ asset('js/elcarrito.js') }}" defer></script>
+    <script src="js/elcarrito.js" defer></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>

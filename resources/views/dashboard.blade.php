@@ -2,8 +2,8 @@
 <html>
 <head>
     <title>PAPA'S PIZZERIA</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <script src="{{ asset('js/dashboard.js') }}" defer></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/dashboard.js" defer></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
 </head>

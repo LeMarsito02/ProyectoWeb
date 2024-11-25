@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>PAPA'S PIZZERIA</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/Style.css">
     <script src="js/dashboard.js" defer></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">

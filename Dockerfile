@@ -14,3 +14,5 @@ ENV LOG_CHANNEL stderr
 ENV COMPOSER_ALLOW_SUPERUSER 1
 CMD ["/start.sh"]
 RUN composer global remove hirak/prestissimo || true
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html

@@ -30,9 +30,12 @@
                       @csrf
                   </form>
                   <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                      <img src="Assets/Menu/logouticon.png" alt="Logout"><span>Salir</span>
+                      <img src="Assets/Menu/logouticon.png" alt="Logout">
+                      <span>Salir</span>
                   </a>
               </li>
+
+
               @endauth
             </ul>
           <a href="{{ Auth::check() ? route('dashboard') : route('login') }}" style="text-decoration: none; color: inherit;">

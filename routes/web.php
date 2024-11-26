@@ -27,7 +27,7 @@ Route::post('register', [RegisterController::class, 'register']);
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth:sanctum');
 Route::get('/dashboard/pedido/{id}', [DashboardController::class, 'show'])->middleware('auth:sanctum');
 Route::put('/dashboard/pedido/{id}/status', [DashboardController::class, 'updateStatus'])
-    ->name('pedido.updateStatus')
+    ->name('updateStatus')
     ->middleware('auth:sanctum');
 
 

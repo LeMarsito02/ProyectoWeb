@@ -155,6 +155,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
     
+    function logout() {
+        const logoutForm = document.getElementById('logout-form');
+        if (logoutForm) {
+            logoutForm.submit();
+        } else {
+            console.error("El formulario de logout no existe.");
+        }
+    }
     
     
 

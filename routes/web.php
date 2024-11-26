@@ -18,7 +18,7 @@ Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 
 Route::post('login', [LoginController::class, 'login']);
 
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth')->name('logout');
 
 Route::get('register', [RegisterController::class, 'showRegisterForm'])->name('register');
 Route::post('register', [RegisterController::class, 'register']);
@@ -26,7 +26,9 @@ Route::post('register', [RegisterController::class, 'register']);
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth:sanctum');
 Route::get('/dashboard/pedido/{id}', [DashboardController::class, 'show'])->middleware('auth:sanctum');
-Route::post('/dashboard/pedido/{id}/status', [DashboardController::class, 'updateStatus'])->name('pedido.updateStatus')->middleware('auth:sanctum');
+Route::put('/dashboard/pedido/{id}/status', [DashboardController::class, 'updateStatus'])
+    ->name('pedido.updateStatus')
+    ->middleware('auth:sanctum');
 
 
 Route::get('/index', function () {

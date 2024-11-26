@@ -126,32 +126,34 @@ document.addEventListener('DOMContentLoaded', function () {
                 loadingDetalles.style.display = 'block';
     
                 fetch(`/dashboard/pedido/${pedidoId}/status`, {
-                    method: 'POST',
+                    method: 'PUT', // Usamos PUT para una actualización RESTful
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     },
-                    body: JSON.stringify({ status: estado })  // Aquí solo enviamos el "status" en el cuerpo
+                    body: JSON.stringify({ status: estado }) // Enviamos solo el estado
                 })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Error al actualizar el estado del pedido.');
+                        throw new Error(`Error al actualizar el estado del pedido. Código: ${response.status}`);
                     }
                     return response.json();
                 })
                 .then(data => {
-                    alert(data.message); // Mensaje de éxito
+                    alert(data.message); // Mensaje de éxito desde el backend
                 })
                 .catch(error => {
                     console.error('Error al actualizar el estado del pedido:', error);
                     alert('Hubo un error al actualizar el estado del pedido.');
                 })
                 .finally(() => {
-                    loadingDetalles.style.display = 'none'; // Ocultar el indicador de carga
+                    // Ocultar el indicador de carga
+                    loadingDetalles.style.display = 'none';
                 });
             });
         });
     }
+    
     
     
     

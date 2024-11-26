@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="Style.css">
     <script src="script.js"></script>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
   </head>
   <body> 
     <header>
@@ -24,7 +25,14 @@
                       <span>Dashboard</span>
                   </a>
               </li>
-              <li class="menu-item"><a href="{{ route('logout') }}"><img src="Assets/Menu/logouticon.png" alt="Logout"><span>Salir</span></a> </li>
+              <li class="menu-item">
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                      @csrf
+                  </form>
+                  <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                      <img src="Assets/Menu/logouticon.png" alt="Logout"><span>Salir</span>
+                  </a>
+              </li>
               @endauth
             </ul>
           <a href="{{ Auth::check() ? route('dashboard') : route('login') }}" style="text-decoration: none; color: inherit;">
